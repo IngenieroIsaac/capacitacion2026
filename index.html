@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Constancias 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #1A365D 0%, #0D1B2E 100%); }
+        .gold-border { border-color: #A37E2C; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+
+    <nav class="gradient-bg text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tight uppercase">Sistema de Verificación 2026</h1>
+            <span class="text-[10px] bg-blue-900 px-2 py-1 rounded border border-blue-700 font-mono italic">OFICIAL</span>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 max-w-4xl">
+        <!-- Panel Admin (Oculto por defecto, útil para que tú edites la lista) -->
+        <section class="bg-white rounded-lg shadow-md p-5 mb-6 border-t-4 gold-border">
+            <details>
+                <summary class="text-sm font-semibold cursor-pointer text-gray-700 flex items-center outline-none">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    EDITAR BASE DE DATOS DE ALUMNOS
+                </summary>
+                <div class="mt-4">
+                    <p class="text-gray-600 text-xs mb-2 italic">Ingresa: FOLIO, Nombre Completo (Uno por línea)</p>
+                    <textarea id="databaseInput" class="w-full h-32 p-3 border rounded font-mono text-xs bg-gray-50 outline-none">PAC-2026-PC-0001, JUAN PÉREZ LÓPEZ
+PAC-2026-PC-0002, MARIA GARCIA RUIZ
+PAC-2026-PC-0003, ISAAC CRUZ MIRANDA</textarea>
+                    <button onclick="updateDatabase()" class="mt-2 bg-blue-800 text-white px-3 py-1.5 rounded text-xs hover:bg-blue-900 transition">Guardar Cambios Locales</button>
+                </div>
+            </details>
+        </section>
+
+        <!-- Interfaz de Usuario -->
+        <section class="bg-white rounded-xl shadow-xl p-8 text-center border-b-8 gold-border">
+            <div class="mb-8">
+                <div class="inline-block p-5 rounded-full bg-blue-50 mb-4 shadow-inner">
+                    <svg class="w-14 h-14 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-black text-gray-800 uppercase tracking-tight">Validación de Constancias</h2>
+                <p class="text-gray-500 text-sm mt-1">Protección Civil - Programa de Capacitación 2026</p>
+            </div>
+
+            <div class="max-w-sm mx-auto">
+                <input type="text" id="folioInput" placeholder="PAC-2026-PC-XXXX" class="w-full p-4 border-2 rounded-xl text-center text-xl font-mono font-bold uppercase tracking-widest focus:border-blue-800 transition-all outline-none mb-4">
+                <button onclick="validateFolio()" class="w-full gradient-bg text-white py-4 rounded-xl font-bold hover:shadow-2xl transition transform active:scale-95 flex justify-center items-center">
+                    VALIDAR DOCUMENTO
+                </button>
+            </div>
+
+            <div id="resultArea" class="mt-10 hidden"></div>
+        </section>
+    </main>
+
+    <footer class="mt-10 text-center text-gray-400 text-[10px] pb-10 uppercase tracking-widest">
+        Verificación Digital &bull; 2026 &bull; Seguridad Privada e Institucional
+    </footer>
+
+    <script>
+        let db = {};
+
+        function updateDatabase() {
+            const input = document.getElementById('databaseInput').value;
+            const lines = input.split('\n');
+            db = {};
+            lines.forEach(line => {
+                const parts = line.split(',');
+                if (parts.length >= 2) db[parts[0].trim().toUpperCase()] = parts[1].trim();
+            });
+        }
+
+        function validateFolio() {
+            const folio = document.getElementById('folioInput').value.trim().toUpperCase();
+            const resultArea = document.getElementById('resultArea');
+            if (!folio) return;
+
+            resultArea.classList.remove('hidden');
+            resultArea.innerHTML = `<div class="flex justify-center py-4"><div class="animate-spin rounded-full h-8 w-8 border-4 border-t-blue-800 border-gray-200"></div></div>`;
+
+            setTimeout(() => {
+                if (db[folio]) {
+                    resultArea.innerHTML = `
+                        <div class="bg-white border-2 border-green-500 rounded-2xl p-6 text-left shadow-lg animate-fade-in relative">
+                            <h3 class="text-green-700 font-black text-lg border-b pb-2 mb-4 italic uppercase">✓ Documento Auténtico</h3>
+                            <div class="space-y-3">
+                                <div><p class="text-gray-400 uppercase text-[9px] font-black">Nombre del Participante</p><p class="text-gray-900 font-bold text-lg">${db[folio]}</p></div>
+                                <div><p class="text-gray-400 uppercase text-[9px] font-black">Curso</p><p class="text-gray-700 font-semibold text-sm uppercase">Introducción a la Protección Civil</p></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><p class="text-gray-400 uppercase text-[9px] font-black">Folio</p><p class="text-gray-800 font-mono text-xs">${folio}</p></div>
+                                    <div><p class="text-gray-400 uppercase text-[9px] font-black">Estatus</p><p class="text-green-600 font-bold text-xs uppercase">Acreditado</p></div>
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    resultArea.innerHTML = `
+                        <div class="bg-red-50 border-2 border-red-500 rounded-2xl p-6 text-left shadow-lg animate-fade-in">
+                            <h3 class="text-red-800 font-bold text-lg uppercase tracking-tight mb-2">Folio no Registrado</h3>
+                            <p class="text-red-700 text-xs">El código ingresado no existe en la base de datos oficial del Plan 2026.</p>
+                        </div>`;
+                }
+            }, 600);
+        }
+
+        // LÓGICA DE AUTO-LLENADO
+        window.onload = function() {
+            updateDatabase();
+            const urlParams = new URLSearchParams(window.location.search);
+            const folioURL = urlParams.get('folio');
+            if (folioURL) {
+                document.getElementById('folioInput').value = folioURL;
+                validateFolio();
+            }
+        };
+    </script>
+</body>
+</html>
