@@ -3,128 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validador de Constancias 2026</title>
+    <title>Validador de Constancias | PC Consultoría</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #1A365D 0%, #0D1B2E 100%); }
-        .gold-border { border-color: #A37E2C; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+        body { font-family: 'Montserrat', sans-serif; background-color: #f8fafc; }
+        .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); }
+        .status-badge { border-radius: 99px; padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .animate-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen font-sans">
+<body class="min-h-screen flex flex-col">
 
-    <nav class="gradient-bg text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-tight uppercase">Sistema de Verificación 2026</h1>
-            <span class="text-[10px] bg-blue-900 px-2 py-1 rounded border border-blue-700 font-mono italic">OFICIAL</span>
+    <header class="gradient-header text-white py-6 shadow-xl">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-2xl font-bold tracking-widest uppercase">PC Consultoría e Ingeniería</h1>
+            <p class="text-blue-200 text-xs mt-1 font-medium tracking-wider">SISTEMA OFICIAL DE VERIFICACIÓN DE CAPACITACIÓN</p>
         </div>
-    </nav>
+    </header>
 
-    <main class="container mx-auto p-4 max-w-4xl">
-        <section class="bg-white rounded-lg shadow-md p-5 mb-6 border-t-4 gold-border">
-            <details>
-                <summary class="text-sm font-semibold cursor-pointer text-gray-700 flex items-center outline-none">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                    EDITAR BASE DE DATOS DE ALUMNOS
-                </summary>
-                <div class="mt-4">
-                    <p class="text-gray-600 text-xs mb-2 italic">Ingresa: FOLIO, Nombre Completo, Nombre del Curso (Uno por línea)</p>
-                    <textarea id="databaseInput" class="w-full h-32 p-3 border rounded font-mono text-xs bg-gray-50 outline-none">
-PAC-2026-PC-0001, JUAN PÉREZ CRUZ, INTRODUCCIÓN A LA PROTECCIÓN CIVIL
-PAC-2026-PC-0002, JUAN PÉREZ CRUZ, PRIMEROS AUXILIOS
-PAC-2026-PC-0003, JUAN PÉREZ CRUZ, EVACUACION DE INMUEBLES
-PAC-2026-PC-0004, JUAN PÉREZ CRUZ, PREVENCION, CONTROL Y EXTINCIÓN DE INCENDIOS
-PAC-2026-PC-0005, JUAN PÉREZ CRUZ, BÚSQUEDA Y RESCATE
-                    </textarea>
-                    <button onclick="updateDatabase()" class="mt-2 bg-blue-800 text-white px-3 py-1.5 rounded text-xs hover:bg-blue-900 transition">Guardar Cambios Locales</button>
-                </div>
-            </details>
-        </section>
+    <main class="flex-grow container mx-auto px-4 py-10 max-w-lg">
+        <!-- Pantalla de Carga -->
+        <div id="loading" class="text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-900 border-t-transparent"></div>
+            <p class="mt-4 text-gray-500 font-semibold italic">Verificando en base de datos...</p>
+        </div>
 
-        <section class="bg-white rounded-xl shadow-xl p-8 text-center border-b-8 gold-border">
-            <div class="mb-8">
-                <div class="inline-block p-5 rounded-full bg-blue-50 mb-4 shadow-inner">
-                    <svg class="w-14 h-14 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        <!-- Resultado Éxito -->
+        <div id="result-card" class="hidden bg-white rounded-2xl shadow-2xl overflow-hidden animate-in border border-gray-100">
+            <div class="bg-emerald-600 p-6 text-center text-white">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-3">
+                    <i class="fas fa-check text-3xl"></i>
                 </div>
-                <h2 class="text-2xl font-black text-gray-800 uppercase tracking-tight">Validación de Constancias</h2>
-                <p class="text-gray-500 text-sm mt-1">Protección Civil - Programa de Capacitación 2026</p>
+                <h2 class="text-xl font-bold uppercase">Documento Auténtico</h2>
+                <p class="text-xs text-emerald-100">Validado exitosamente para el ciclo 2026</p>
             </div>
 
-            <div class="max-w-sm mx-auto">
-                <input type="text" id="folioInput" placeholder="PAC-2026-PC-XXXX" class="w-full p-4 border-2 rounded-xl text-center text-xl font-mono font-bold uppercase tracking-widest focus:border-blue-800 transition-all outline-none mb-4">
-                <button onclick="validateFolio()" class="w-full gradient-bg text-white py-4 rounded-xl font-bold hover:shadow-2xl transition transform active:scale-95 flex justify-center items-center">
-                    VALIDAR DOCUMENTO
-                </button>
-            </div>
+            <div class="p-8 space-y-6">
+                <div>
+                    <label class="text-[10px] text-gray-400 font-black uppercase tracking-tighter">Participante</label>
+                    <p id="res-nombre" class="text-xl font-bold text-slate-800 leading-tight uppercase"></p>
+                </div>
 
-            <div id="resultArea" class="mt-10 hidden"></div>
-        </section>
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50">
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-black uppercase">No. de Folio</label>
+                        <p id="res-folio" class="text-sm font-mono font-bold text-blue-700"></p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-black uppercase">Resultado</label>
+                        <p class="text-sm font-bold text-slate-700">Aprobado (<span id="res-calif"></span>/10)</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <label class="text-[10px] text-gray-400 font-black uppercase">Capacitación Impartida</label>
+                    <p id="res-tema" class="text-sm font-bold text-slate-800 mb-2"></p>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-500 font-bold italic">
+                        <span><i class="far fa-calendar-alt mr-1"></i> <span id="res-fecha"></span></span>
+                        <span><i class="far fa-clock mr-1"></i> <span id="res-duracion"></span></span>
+                    </div>
+                </div>
+
+                <div class="text-center pt-4">
+                    <p class="text-[9px] text-gray-400 font-bold uppercase mb-2">Firmado digitalmente por:</p>
+                    <p class="text-xs font-black text-slate-700 uppercase">Ing. Isaac Cruz Miranda</p>
+                    <p class="text-[10px] text-slate-400 italic">Agente Capacitador Externo STPS</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado Error -->
+        <div id="error-card" class="hidden bg-white rounded-2xl shadow-xl p-10 text-center animate-in border-t-4 border-red-500">
+            <div class="text-red-500 mb-4">
+                <i class="fas fa-times-circle text-6xl"></i>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800 uppercase">Folio Inexistente</h2>
+            <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+                El código ingresado no coincide con nuestros registros oficiales de 2026. Por favor, verifique que el enlace sea el correcto.
+            </p>
+        </div>
     </main>
 
-    <footer class="mt-10 text-center text-gray-400 text-[10px] pb-10 uppercase tracking-widest">
-        Verificación Digital &bull; 2026 &bull; Seguridad Privada e Institucional
+    <footer class="py-8 bg-slate-100 text-center border-t border-slate-200">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+            PC Consultoría e Ingeniería Integral &copy; 2026
+        </p>
     </footer>
 
     <script>
-        let db = {};
+        const registros = [
+            // PRIMEROS AUXILIOS (7 de Febrero)
+            {f: "PA-2026-PC001", n: "AZAEL MARCOS SALINAS", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC002", n: "HUMBERTO MENDOZA HERNÁNDEZ", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC003", n: "MARIA DEL ROCIO GARCIA LUNA", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC004", n: "MONICA AMADOR MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC005", n: "CONSUELO JARQUIN JUAREZ", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC006", n: "ESTHER MARTINEZ MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC007", n: "MA. MAGDALENA RODRIGUEZ QUEZADA", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC008", n: "JESSICA FLORES FLORES", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC009", n: "JESSICA VERONICA DOMINGUEZ DOROTEO", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC010", n: "RODRIGO ALVARADO QUINTANA", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            {f: "PA-2026-PC011", n: "ALEJANDRA GALICIA HUERTA", t: "Primeros Auxilios", d: "8 horas", fe: "7 de febrero de 2026", c: "8"},
+            
+            // INCENDIOS (4 de Abril)
+            {f: "PCEI-2026-PC-001", n: "AMAYRANI PATRICIA URIBE FRIAS", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-002", n: "FERNANDO PUERTA CALDERÓN", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-003", n: "GUILLERMO TELLEZ RODRIGUEZ", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-004", n: "ELIZABETH ESTRADA SEVERINO", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-005", n: "ANDREA MANZANO VAZQUEZ", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-006", n: "KAREN BEATRIZ CHAVEZ GONZÁLEZ", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-007", n: "HUMBERTO MENDOZA HERNÁNDEZ", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-008", n: "LUIS ANTONIO RUIZ CASTRO", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-009", n: "JORGE ALBERTO RAMÍREZ MARTÍNEZ", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-010", n: "ALBERTO MUCIÑO PEREA", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
+            {f: "PCEI-2026-PC-011", n: "ALMA ROJAS AVILES", t: "Prevención, Control y Extinción de Incendios", d: "8 horas", fe: "4 de abril de 2026", c: "8"},
 
-        function updateDatabase() {
-            const input = document.getElementById('databaseInput').value;
-            const lines = input.split('\n');
-            db = {};
-            lines.forEach(line => {
-                const parts = line.split(',');
-                if (parts.length >= 3) {
-                    db[parts[0].trim().toUpperCase()] = {
-                        nombre: parts[1].trim(),
-                        curso: parts[2].trim()
-                    };
-                }
-            });
-        }
+            // EVACUACIÓN (11 de Abril)
+            {f: "ER-2026-PC-001", n: "MAGALY MONTSERRAT DE LA CRUZ LANDEROS", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-002", n: "ANDREA RUIZ TENORIO", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-003", n: "LUIS ANTEL ESPINOSA", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-004", n: "SARA SAN JUAN HERNÁNDEZ", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-005", n: "CRISTOPHER URIEL MARTÍNEZ S.", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-006", n: "ESTEFANIA MONTSERRAT ROMERO PÉREZ", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-007", n: "HUMBERTO MENDOZA HERNÁNDEZ", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-008", n: "DAVID LÓPEZ CASTRO", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"},
+            {f: "ER-2026-PC-010", n: "VALERIA SALINAS ALVAREZ", t: "Evacuación de Inmuebles", d: "8 horas", fe: "11 de abril de 2026", c: "8"}
+        ];
 
-        function validateFolio() {
-            const folio = document.getElementById('folioInput').value.trim().toUpperCase();
-            const resultArea = document.getElementById('resultArea');
-            if (!folio) return;
-
-            resultArea.classList.remove('hidden');
-            resultArea.innerHTML = `<div class="flex justify-center py-4"><div class="animate-spin rounded-full h-8 w-8 border-4 border-t-blue-800 border-gray-200"></div></div>`;
-
-            setTimeout(() => {
-                if (db[folio]) {
-                    resultArea.innerHTML = `
-                        <div class="bg-white border-2 border-green-500 rounded-2xl p-6 text-left shadow-lg animate-fade-in relative">
-                            <h3 class="text-green-700 font-black text-lg border-b pb-2 mb-4 italic uppercase">✓ Documento Auténtico</h3>
-                            <div class="space-y-3">
-                                <div><p class="text-gray-400 uppercase text-[9px] font-black">Nombre del Participante</p><p class="text-gray-900 font-bold text-lg">${db[folio].nombre}</p></div>
-                                <div><p class="text-gray-400 uppercase text-[9px] font-black">Curso</p><p class="text-gray-700 font-semibold text-sm uppercase">${db[folio].curso}</p></div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div><p class="text-gray-400 uppercase text-[9px] font-black">Folio</p><p class="text-gray-800 font-mono text-xs">${folio}</p></div>
-                                    <div><p class="text-gray-400 uppercase text-[9px] font-black">Estatus</p><p class="text-green-600 font-bold text-xs uppercase">Acreditado</p></div>
-                                </div>
-                            </div>
-                        </div>`;
-                } else {
-                    resultArea.innerHTML = `
-                        <div class="bg-red-50 border-2 border-red-500 rounded-2xl p-6 text-left shadow-lg animate-fade-in">
-                            <h3 class="text-red-800 font-bold text-lg uppercase tracking-tight mb-2">Folio no Registrado</h3>
-                            <p class="text-red-700 text-xs">El código ingresado no existe en la base de datos oficial del Plan 2026.</p>
-                        </div>`;
-                }
-            }, 600);
-        }
-
-        window.onload = function() {
-            updateDatabase();
+        window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const folioURL = urlParams.get('folio');
-            if (folioURL) {
-                document.getElementById('folioInput').value = folioURL;
-                validateFolio();
-            }
-        }; 
+            const folioBuscado = urlParams.get('folio');
+            
+            const loader = document.getElementById('loading');
+            const card = document.getElementById('result-card');
+            const error = document.getElementById('error-card');
+
+            // Simulación de búsqueda en servidor
+            setTimeout(() => {
+                loader.classList.add('hidden');
+
+                if (!folioBuscado) {
+                    error.classList.remove('hidden');
+                    return;
+                }
+
+                const registro = registros.find(r => r.f.toUpperCase() === folioBuscado.toUpperCase().trim());
+
+                if (registro) {
+                    document.getElementById('res-nombre').textContent = registro.n;
+                    document.getElementById('res-folio').textContent = registro.f;
+                    document.getElementById('res-tema').textContent = registro.t;
+                    document.getElementById('res-duracion').textContent = registro.d;
+                    document.getElementById('res-fecha').textContent = registro.fe;
+                    document.getElementById('res-calif').textContent = registro.c;
+                    card.classList.remove('hidden');
+                } else {
+                    error.classList.remove('hidden');
+                }
+            }, 1200);
+        });
     </script>
 </body>
 </html>
