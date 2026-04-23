@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Constancias | PC Consultoría</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Montserrat', sans-serif; background-color: #f8fafc; }
+        .bg-gradient-pc { background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); }
+        .card-entry { animation: slideUp 0.6s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Encabezado -->
+    <header class="bg-gradient-pc text-white py-10 shadow-xl">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-3xl font-black tracking-tighter uppercase mb-1">PC Consultoría</h1>
+            <p class="text-amber-500 text-[10px] font-black tracking-[0.4em] uppercase">Validación de Capacitación 2026</p>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-lg">
+        
+        <!-- Cargando -->
+        <div id="loading-state" class="text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-900 border-t-transparent"></div>
+            <p class="mt-6 text-slate-500 font-bold animate-pulse text-sm">Consultando registros oficiales...</p>
+        </div>
+
+        <!-- Tarjeta de Éxito -->
+        <div id="success-card" class="hidden bg-white rounded-[2.5rem] shadow-2xl overflow-hidden card-entry border border-slate-100">
+            <div class="bg-emerald-600 p-10 text-center text-white">
+                <div class="bg-white/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check-double text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-black uppercase tracking-tight">Registro Verificado</h2>
+                <p class="text-emerald-100 text-xs font-medium opacity-80">Documento auténtico y vigente</p>
+            </div>
+
+            <div class="p-10 space-y-8">
+                <section>
+                    <label class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-2">Nombre del Alumno</label>
+                    <p id="disp-nombre" class="text-2xl font-bold text-slate-800 uppercase italic leading-tight"></p>
+                </section>
+
+                <div class="grid grid-cols-2 gap-8 py-6 border-y border-slate-50">
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-2">Folio Interno</label>
+                        <p id="disp-folio" class="text-sm font-mono font-black text-blue-800"></p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-2">Estatus</label>
+                        <span class="bg-emerald-100 text-emerald-700 text-[10px] font-black px-3 py-1 rounded-full">APROBADO</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-3xl">
+                    <label class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-3">Información del Curso</label>
+                    <p id="disp-tema" class="text-base font-black text-slate-800 uppercase leading-snug mb-4"></p>
+                    <div class="grid grid-cols-2 text-[11px] font-bold text-slate-500">
+                        <span><i class="far fa-calendar-alt mr-2 text-blue-900"></i> <span id="disp-fecha"></span></span>
+                        <span><i class="far fa-clock mr-2 text-blue-900"></i> <span id="disp-duracion"></span></span>
+                    </div>
+                </div>
+
+                <div class="text-center pt-4">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1 tracking-widest">Agente Capacitador</p>
+                    <p class="text-sm font-black text-slate-800">ING. ISAAC CRUZ MIRANDA</p>
+                    <p class="text-[9px] text-slate-400">Registro STPS Vigente 2026</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Error -->
+        <div id="error-card" class="hidden bg-white rounded-[2.5rem] shadow-2xl p-12 text-center card-entry border-t-8 border-red-500">
+            <i class="fas fa-search-minus text-slate-200 text-7xl mb-6"></i>
+            <h2 class="text-xl font-black text-slate-800 uppercase">Sin coincidencias</h2>
+            <p class="text-slate-500 mt-4 text-sm leading-relaxed">
+                El folio ingresado no se encuentra en nuestra base de datos. Verifique que el código sea correcto o contacte al instructor.
+            </p>
+        </div>
+    </main>
+
+    <footer class="py-12 text-center text-slate-400">
+        <p class="text-[10px] font-black uppercase tracking-[0.5em]">PC Consultoría e Ingeniería Integral</p>
+    </footer>
+
+    <script>
+        const baseDeDatos = [
+            // PRIMEROS AUXILIOS (10 Feb)
+            {f: "PA-2026-PC-001", n: "MA. MAGDALENA RODRIGUEZ QUEZADA", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-002", n: "MONICA AMADOR MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-003", n: "CONSUELO JARQUIN JUAREZ", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-004", n: "FRANCISCA BARTOLO GOMEZ", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-005", n: "CINTIA SOLIS MIRELES", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-006", n: "MARIA ISABEL BAUTISTA GALINDO", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-007", n: "JESSICA FLORES FLORES", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-008", n: "HILDA CEFERINO GORGONIΟ", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+            {f: "PA-2026-PC-009", n: "MARIA GUADALUPE TELLEZ MERINOS", t: "Primeros Auxilios", d: "8 horas", fe: "10 de febrero del 2026"},
+
+            // INCENDIOS (24 Mar)
+            {f: "PCEI-2026-PC-001", n: "LUIS MANRIQUEZ SUAREZ", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-002", n: "ALEJANDRA GALICIA HUERTA", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-003", n: "JORGE ALBERTO RAMIREZ MARTINEZ", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-004", n: "MIGUEL ANGEL SOLANO BRAVO", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-005", n: "KEVIN ISRAEL VALOEZ BARRERA", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-006", n: "MARIA TRINIDAD VELAZQUEZ VAZQUEZ", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-007", n: "ROCIO ALEJANDRA SANCHEZ ESTRADA", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-008", n: "MARIA DEL REFUGIO MENDOZA ALVAREZ", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-009", n: "ALMA DELIA RAMIREZ MUÑOZ", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-010", n: "HUMBERTO MENOOZA HERNANDEZ", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+            {f: "PCEI-2026-PC-011", n: "ISABEL ARELI GALINDO DE LA ROSA", t: "Prevención, control y extinción de incendios", d: "7 horas", fe: "24 de marzo del 2026"},
+
+            // EVACUACIÓN (14 Abr)
+            {f: "ER-2026-PC-001", n: "MARTINEZ SANCHEZ URIEL CRISTOPHER", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-002", n: "JURADO HERNANDEZ MARCELA", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-003", n: "ALEJANDRE PEREZ FANNY GRISEL", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-004", n: "ANDRES GARCIA ENRIQUE", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-005", n: "CRISTOBAL GONZALEZ EFREN", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-006", n: "PEREZ BALDERAS FRANCISCO GABRIEL", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-007", n: "ARROYO RUIZ LUIS GERMAN", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-008", n: "TADEO CRUZ ANA KAREN", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-009", n: "CEFERINO GORGONIO HILDA", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"},
+            {f: "ER-2026-PC-010", n: "CLAUDIA RUIZ SOLIS", t: "Evacuación de inmuebles", d: "5 horas", fe: "14 de abril del 2026"}
+        ];
+
+        window.onload = () => {
+            const query = new URLSearchParams(window.location.search);
+            const folio = query.get('folio');
+            
+            const loader = document.getElementById('loading-state');
+            const success = document.getElementById('success-card');
+            const fail = document.getElementById('error-card');
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                
+                if (!folio) {
+                    fail.classList.remove('hidden');
+                    return;
+                }
+
+                const result = baseDeDatos.find(r => r.f.toUpperCase() === folio.trim().toUpperCase());
+
+                if (result) {
+                    document.getElementById('disp-nombre').textContent = result.n;
+                    document.getElementById('disp-folio').textContent = result.f;
+                    document.getElementById('disp-tema').textContent = result.t;
+                    document.getElementById('disp-fecha').textContent = result.fe;
+                    document.getElementById('disp-duracion').textContent = result.d;
+                    success.classList.remove('hidden');
+                } else {
+                    fail.classList.remove('hidden');
+                }
+            }, 1500);
+        };
+    </script>
+</body>
+</html>
