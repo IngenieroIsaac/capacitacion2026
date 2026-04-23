@@ -98,29 +98,33 @@
     </footer>
 
     <script>
-        const registros = [
-            // --- NUEVOS: PRIMEROS AUXILIOS CITY FRESKO (13 de Febrero 2026) ---
-            {f: "PA-2026-CF-001", n: "RITA MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-002", n: "ANASANA CALDERON VICTORIO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-003", n: "EDER ROMERO CHAVERO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-004", n: "ELADIO PEREZ GORDILLO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-005", n: "FRANCISCO JAVIER FLORES SANCHEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-006", n: "GABRIEL CABALLERO TORRES", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-007", n: "ISIDRO SANCHEZ MATEO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-008", n: "JONATHAN LOPEZ ARCOS", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-009", n: "SAID ISAI FLORES GUARNEROS", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-            {f: "PA-2026-CF-010", n: "ANTONIO PEREZ ENRIQUEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+       const registros = [
+    // --- PRIMEROS AUXILIOS INTERLOMAS (13 de febrero 2026) ---
+    {f: "PA-2026-CF-001", n: "RITA MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-002", n: "ANASANA CALDERON VICTORIO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-003", n: "TANIA JAZMIN LEYVA AYALA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-004", n: "CRISTINO CARBAJAL CATALÁN", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-005", n: "ROSA M. PEREZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-006", n: "LILIANA GONZALEZ LUNA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-007", n: "ISRAEL VÁZQUEZ LOPEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-008", n: "YADHIRA MOCTEZUMA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-009", n: "SAID ISAI FLORES GUARNEROS", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+    {f: "PA-2026-CF-010", n: "ANTONIO PEREZ ENRIQUEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
 
-            // --- NUEVOS: PREVENCIÓN DEL FUEGO CITY FRESKO (24 de Marzo 2026) ---
-            {f: "PF-2026-CF-011", n: "ALBERTO VASQUEZ FERNANDEZ", t: "Prevención del Fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-            {f: "PF-2026-CF-012", n: "CRIS BERTIN DUAREZ RIVERA", t: "Prevención del Fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-            {f: "PF-2026-CF-013", n: "EDGAR ENRIQUEZ SOLANO", t: "Prevención del Fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-            {f: "PF-2026-CF-014", n: "GABRIEL ROMERO MARTINEZ", t: "Prevención del Fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-            {f: "PF-2026-CF-021", n: "RICARDO MELENDEZ ALVARADO", t: "Prevención del Fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-            {f: "PF-2026-CF-022", n: "LUIS GUSTAVO OBREGON MARTINEZ", t: "Prevención del Fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-
-        ];
-
+    // --- PREVENCIÓN DEL FUEGO INTERLOMAS (24 de marzo 2026) ---
+    {f: "PF-2026-CF-011", n: "ALBERTO VASQUEZ FERNANDEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-012", n: "CRIS BERTIN DUAREZ RIVERA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-013", n: "MARIO GUERRERO CERVANTES", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-014", n: "LUIS ARTURO QUINTERO BAEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-015", n: "JESUS CHAMORRO TELO", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-016", n: "PAUL ALONSO GUTIERREZ GARCIA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-017", n: "LUIS ALBERTO GARCIA HERNANDEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-018", n: "CHRISTIAN HERNANDEZ CRUZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-019", n: "IVAN GARCIA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-020", n: "CESAR LOPEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-021", n: "RICARDO MELENDEZ ALVARADO", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+    {f: "PF-2026-CF-022", n: "LUIS GUSTAVO OBREGON MARTINEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"}
+];
         // Función para limpiar caracteres especiales de los folios al buscar
         function normalizar(texto) {
             return texto.toUpperCase().replace(/[^A-Z0-9]/g, "").trim();
