@@ -3,181 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validador de Capacitación 2026 - Ing. Isaac Cruz</title>
+    <title>Validador de Capacitación 2026 - Isaac Cruz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --azul-primario: #1A365D;
-            --dorado: #A37E2C;
-            --gris-fondo: #F8FAFC;
-        }
-        body {
-            background-color: var(--gris-fondo);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-        .header-gradient {
-            background: linear-gradient(135deg, var(--azul-primario) 0%, #2c5282 100%);
-        }
-        .border-dorado {
-            border-color: var(--dorado);
-        }
-        .text-azul {
-            color: var(--azul-primario);
-        }
-        .bg-dorado {
-            background-color: var(--dorado);
-        }
-        .card-shadow {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        :root { --azul: #1e3a8a; --dorado: #b45309; }
+        body { background-color: #f1f5f9; font-family: sans-serif; }
+        .card-valid { border-left: 8px solid #22c55e; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col items-center p-4">
 
-    <!-- Header -->
-    <header class="header-gradient text-white py-8 px-4 shadow-xl relative overflow-hidden text-center">
-        <div class="max-w-4xl mx-auto relative z-10">
-            <h1 class="text-2xl md:text-4xl font-extrabold mb-2 tracking-tight">SISTEMA DE VALIDACIÓN</h1>
-            <p class="text-blue-100 text-sm md:text-base opacity-90">Ing. Isaac Cruz Miranda - Consultor en Protección Civil</p>
-        </div>
+    <!-- Encabezado Profesional -->
+    <header class="w-full max-w-2xl bg-blue-900 text-white rounded-2xl p-6 mb-6 shadow-lg text-center">
+        <h1 class="text-xl md:text-2xl font-bold tracking-tight">SISTEMA DE VERIFICACIÓN QR</h1>
+        <p class="text-blue-200 text-xs mt-1 uppercase tracking-widest">Ing. Isaac Cruz Miranda - Consultor</p>
     </header>
 
-    <main class="flex-grow container mx-auto px-4 py-8 max-w-2xl">
-        
-        <!-- Buscador -->
-        <div class="bg-white rounded-2xl p-6 card-shadow mb-8 border-t-4 border-dorado">
-            <label class="text-gray-600 font-bold mb-3 block text-sm italic">Ingrese el folio para verificar:</label>
-            <div class="flex flex-col sm:flex-row gap-3">
-                <input type="text" id="folioInput" placeholder="Ej: PA-2026-CF-001" 
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl uppercase font-mono text-lg outline-none focus:ring-2 focus:ring-amber-500/20">
-                <button onclick="buscarFolio()" class="bg-dorado hover:bg-[#8B6B25] text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md">
-                    VALIDAR
+    <main class="w-full max-w-2xl">
+        <!-- Panel de Búsqueda -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 border border-gray-100">
+            <label class="block text-gray-500 text-xs font-bold mb-2 uppercase">Validación de Constancia:</label>
+            <div class="flex gap-2">
+                <input type="text" id="folioInput" placeholder="Ingrese el folio (ej: PA-2026-CF-001)" 
+                    class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-lg font-mono uppercase focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="validar()" class="bg-blue-900 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-800 transition-colors">
+                    VERIFICAR
                 </button>
             </div>
         </div>
 
-        <!-- Resultados -->
-        <div id="resultArea" class="hidden"></div>
+        <!-- Área de Resultados -->
+        <div id="resultado"></div>
 
-        <div id="defaultMessage" class="text-center py-12">
-            <i class="fas fa-certificate text-gray-200 text-8xl mb-4"></i>
-            <p class="text-gray-400">Esperando folio para validación...</p>
+        <!-- Mensaje Inicial -->
+        <div id="instrucciones" class="text-center py-10 opacity-40">
+            <i class="fas fa-qrcode text-6xl mb-3 text-gray-400"></i>
+            <p class="text-sm">Escanee el código QR o ingrese el folio manualmente para validar la autenticidad del documento.</p>
         </div>
-
     </main>
 
-    <footer class="bg-white border-t border-gray-100 py-6 mt-auto text-center">
-        <p class="font-bold text-azul text-sm uppercase tracking-widest">ING. ISAAC CRUZ MIRANDA</p>
-        <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-tighter">Verificación de Capacitación Normativa 2026</p>
-    </footer>
-
     <script>
-        // BASE DE DATOS ACTUALIZADA CON LOS ÚLTIMOS PDF SUBIDOS
-        const constancias = [
-            // --- CITY FRESKO INTERLOMAS - PRIMEROS AUXILIOS ---
-            { folio: "PA-2026-CF-001", nombre: "RITA MARTINEZ", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-002", nombre: "ANASANA CALDERON VICTORIO", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-003", nombre: "EDER ROMERO CHAVERO", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-004", nombre: "ELADIO PEREZ GORDILLO", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-005", nombre: "FRANCISCO JAVIER FLORES SANCHEZ", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-006", nombre: "GABRIEL CABALLERO TORRES", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-007", nombre: "ISIDRO SANCHEZ MATEO", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-008", nombre: "JONATHAN LOPEZ ARCOS", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-009", nombre: "SAID ISAI FLORES GUARNEROS", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PA-2026-CF-010", nombre: "ANTONIO PEREZ ENRIQUEZ", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas", sede: "Comercial City Fresko (Interlomas)" },
-            
-            // --- CITY FRESKO INTERLOMAS - PREVENCIÓN DEL FUEGO ---
-            { folio: "PF-2026-CF-011", nombre: "ALBERTO VASQUEZ FERNANDEZ", curso: "Prevención del Fuego", fecha: "24 de marzo del 2026", duracion: "7 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PF-2026-CF-012", nombre: "CRIS BERTIN DUAREZ RIVERA", curso: "Prevención del Fuego", fecha: "24 de marzo del 2026", duracion: "7 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PF-2026-CF-013", nombre: "EDGAR ENRIQUEZ SOLANO", curso: "Prevención del Fuego", fecha: "24 de marzo del 2026", duracion: "7 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PF-2026-CF-014", nombre: "GABRIEL ROMERO MARTINEZ", curso: "Prevención del Fuego", fecha: "24 de marzo del 2026", duracion: "7 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PF-2026-CF-021", nombre: "RICARDO MELENDEZ ALVARADO", curso: "Prevención del Fuego", fecha: "24 de marzo del 2026", duracion: "7 horas", sede: "Comercial City Fresko (Interlomas)" },
-            { folio: "PF-2026-CF-022", nombre: "LUIS GUSTAVO OBREGON MARTINEZ", curso: "Prevención del Fuego", fecha: "24 de marzo del 2026", duracion: "7 horas", sede: "Comercial City Fresko (Interlomas)" },
+        // BASE DE DATOS RE-VERIFICADA CON TUS ARCHIVOS SUBIDOS
+        const db = [
+            // --- PRIMEROS AUXILIOS (City Fresko Interlomas) ---
+            { f: "PA-2026-CF-001", n: "RITA MARTINEZ", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-002", n: "ANASANA CALDERON VICTORIO", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-003", n: "EDER ROMERO CHAVERO", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-004", n: "ELADIO PEREZ GORDILLO", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-005", n: "FRANCISCO JAVIER FLORES SANCHEZ", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-006", n: "GABRIEL CABALLERO TORRES", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-007", n: "ISIDRO SANCHEZ MATEO", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-008", n: "JONATHAN LOPEZ ARCOS", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-009", n: "SAID ISAI FLORES GUARNEROS", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PA-2026-CF-010", n: "ANTONIO PEREZ ENRIQUEZ", c: "Primeros Auxilios", d: "13 de febrero del 2026", h: "8 horas", s: "Comercial City Fresko (Interlomas)" },
 
-            // --- OTROS FOLIOS (EJEMPLO) ---
-            { folio: "ER-2026-PC-007", nombre: "DAVID LÓPEZ CASTRO", curso: "Evacuación de Inmuebles", fecha: "11 de abril del 2026", duracion: "8 horas", sede: "General" },
-            { folio: "PA-2026-PC001", nombre: "AZAEL MARCOS SALINAS", curso: "Primeros Auxilios", fecha: "Febrero 2026", duracion: "8 horas", sede: "General" }
+            // --- PREVENCIÓN DEL FUEGO (City Fresko Interlomas) ---
+            { f: "PF-2026-CF-011", n: "ALBERTO VASQUEZ FERNANDEZ", c: "Prevención del Fuego", d: "24 de marzo del 2026", h: "7 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PF-2026-CF-012", n: "CRIS BERTIN DUAREZ RIVERA", c: "Prevención del Fuego", d: "24 de marzo del 2026", h: "7 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PF-2026-CF-013", n: "EDGAR ENRIQUEZ SOLANO", c: "Prevención del Fuego", d: "24 de marzo del 2026", h: "7 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PF-2026-CF-014", n: "GABRIEL ROMERO MARTINEZ", c: "Prevención del Fuego", d: "24 de marzo del 2026", h: "7 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PF-2026-CF-021", n: "RICARDO MELENDEZ ALVARADO", c: "Prevención del Fuego", d: "24 de marzo del 2026", h: "7 horas", s: "Comercial City Fresko (Interlomas)" },
+            { f: "PF-2026-CF-022", n: "LUIS GUSTAVO OBREGON MARTINEZ", c: "Prevención del Fuego", d: "24 de marzo del 2026", h: "7 horas", s: "Comercial City Fresko (Interlomas)" },
+            
+            // --- OTROS (Jesús del Monte / Huixquilucan) ---
+            { f: "PA-2026-PC001", n: "AZAEL MARCOS SALINAS", c: "Primeros Auxilios", d: "Febrero 2026", h: "8 horas", s: "Huixquilucan" },
+            { f: "ER-2026-PC-007", n: "DAVID LÓPEZ CASTRO", c: "Evacuación de Inmuebles", d: "11 de abril del 2025", h: "8 horas", s: "Huixquilucan" }
         ];
 
-        function buscarFolio() {
-            const input = document.getElementById('folioInput').value.trim().toUpperCase();
-            const resultArea = document.getElementById('resultArea');
-            const defaultMessage = document.getElementById('defaultMessage');
-
-            if (!input) return;
-
-            resultArea.innerHTML = `<div class="text-center p-10"><i class="fas fa-circle-notch animate-spin text-dorado text-4xl"></i></div>`;
-            resultArea.classList.remove('hidden');
-            defaultMessage.classList.add('hidden');
-
-            setTimeout(() => {
-                const c = constancias.find(item => item.folio === input);
-
-                if (c) {
-                    resultArea.innerHTML = `
-                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-l-8 border-green-500 animate-fade-in">
-                            <div class="bg-green-50 p-4 border-b border-green-100 flex items-center gap-3 text-green-700">
-                                <i class="fas fa-check-circle"></i>
-                                <span class="font-bold text-xs uppercase tracking-widest">Documento Válido y Registrado</span>
-                            </div>
-                            <div class="p-6">
-                                <div class="mb-4">
-                                    <label class="text-[10px] text-gray-400 font-black uppercase">Participante:</label>
-                                    <p class="text-xl font-bold text-azul">${c.nombre}</p>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                                    <div>
-                                        <label class="text-[10px] text-gray-400 font-black uppercase">Curso:</label>
-                                        <p class="text-sm font-bold text-gray-700">${c.curso}</p>
-                                    </div>
-                                    <div>
-                                        <label class="text-[10px] text-gray-400 font-black uppercase">Folio:</label>
-                                        <p class="text-sm font-mono font-bold text-dorado">${c.folio}</p>
-                                    </div>
-                                    <div>
-                                        <label class="text-[10px] text-gray-400 font-black uppercase">Fecha:</label>
-                                        <p class="text-sm text-gray-600">${c.fecha}</p>
-                                    </div>
-                                    <div>
-                                        <label class="text-[10px] text-gray-400 font-black uppercase">Sede:</label>
-                                        <p class="text-sm text-gray-600">${c.sede}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    resultArea.innerHTML = `
-                        <div class="bg-white rounded-2xl shadow-xl p-8 border-l-8 border-red-500 animate-fade-in text-center">
-                            <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
-                            <h3 class="text-lg font-bold text-gray-800">REGISTRO NO ENCONTRADO</h3>
-                            <p class="text-gray-500 text-sm mt-2">El folio <span class="font-mono font-bold text-red-600">${input}</span> no se encuentra en nuestra base de datos oficial 2026.</p>
-                            <button onclick="location.reload()" class="mt-4 text-xs font-bold text-azul uppercase">Reintentar</button>
-                        </div>
-                    `;
-                }
-            }, 500);
+        function limpiarTexto(t) {
+            // Elimina espacios, guiones y convierte a mayúsculas para evitar fallos de escritura
+            return t.toUpperCase().replace(/[^A-Z0-9]/g, "");
         }
 
-        // Lógica para QR automático
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const f = params.get('folio');
-            if (f) {
-                document.getElementById('folioInput').value = f;
-                buscarFolio();
-            }
-        };
+        function validar() {
+            const rawInput = document.getElementById('folioInput').value;
+            const cleanInput = limpiarTexto(rawInput);
+            const resDiv = document.getElementById('resultado');
+            const instDiv = document.getElementById('instrucciones');
 
-        document.getElementById('folioInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') buscarFolio(); });
+            if (!cleanInput) return;
+
+            instDiv.classList.add('hidden');
+            
+            // Búsqueda flexible comparando solo caracteres alfanuméricos
+            const registro = db.find(item => limpiarTexto(item.f) === cleanInput);
+
+            if (registro) {
+                resDiv.innerHTML = `
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden card-valid mb-6">
+                        <div class="bg-green-50 px-6 py-3 border-b border-green-100 flex items-center justify-between">
+                            <span class="text-green-700 font-bold text-xs"><i class="fas fa-check-circle mr-2"></i>DOCUMENTO AUTÉNTICO</span>
+                            <span class="text-green-600 font-mono text-xs">${registro.f}</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-4">
+                                <span class="text-gray-400 text-[10px] font-bold uppercase block">Participante</span>
+                                <span class="text-xl font-bold text-blue-900">${registro.n}</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span class="text-gray-400 text-[10px] font-bold uppercase block">Capacitación</span>
+                                    <span class="text-sm font-semibold text-gray-700">${registro.c}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-[10px] font-bold uppercase block">Duración</span>
+                                    <span class="text-sm font-semibold text-gray-700">${registro.h}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-[10px] font-bold uppercase block">Fecha Emisión</span>
+                                    <span class="text-sm text-gray-600">${registro.d}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 text-[10px] font-bold uppercase block">Lugar</span>
+                                    <span class="text-sm text-gray-600">${registro.s}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resDiv.innerHTML = `
+                    <div class="bg-white rounded-2xl shadow-xl p-8 border-l-8 border-red-500 text-center">
+                        <i class="fas fa-times-circle text-red-500 text-5xl mb-4"></i>
+                        <h2 class="text-lg font-bold text-gray-800">FOLIO INEXISTENTE</h2>
+                        <p class="text-gray-500 text-sm mt-2">El folio <strong class="text-red-600">${rawInput}</strong> no coincide con nuestros registros de 2026.</p>
+                        <p class="text-xs text-gray-400 mt-4 italic underline cursor-pointer" onclick="location.reload()">Intentar de nuevo</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Carga automática desde URL
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const folioUrl = urlParams.get('folio');
+            if (folioUrl) {
+                document.getElementById('folioInput').value = folioUrl;
+                validar();
+            }
+        }
     </script>
 </body>
 </html>
