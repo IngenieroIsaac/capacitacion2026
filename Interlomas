@@ -56,7 +56,7 @@
         <div class="bg-white rounded-xl p-6 card-shadow mb-8 border-t-4 border-dorado">
             <label for="folioInput" class="block text-sm font-semibold text-gray-600 mb-2">Ingrese el Folio de la Constancia:</label>
             <div class="flex gap-2">
-                <input type="text" id="folioInput" placeholder="Ej: PF-2026-FI-001" 
+                <input type="text" id="folioInput" placeholder="Ej: PF-2026-CF-011" 
                     class="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-800 focus:outline-none uppercase">
                 <button onclick="buscarFolio()" class="bg-dorado hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-bold transition-colors">
                     <i class="fas fa-search"></i>
@@ -92,9 +92,9 @@
     </footer>
 
     <script>
-        // Base de datos de constancias actualizada
+        // Base de datos de constancias actualizada 2026
         const constancias = [
-            // PRIMEROS AUXILIOS (PA)
+            // PRIMEROS AUXILIOS (PA) - FEBRERO 2026
             { folio: "PA-2026-FI-001", nombre: "RITA MARTINEZ", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas" },
             { folio: "PA-2026-FI-002", nombre: "ANASANA CALDERON VICTORIO", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas" },
             { folio: "PA-2026-FI-003", nombre: "TANIA JAZMIN LEYVA AYALA", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas" },
@@ -106,7 +106,7 @@
             { folio: "PA-2026-FI-009", nombre: "SAID ISAI FLORES GUARNEROS", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas" },
             { folio: "PA-2026-FI-010", nombre: "ANTONIO PEREZ ENRIQUEZ", curso: "Primeros Auxilios", fecha: "13 de febrero del 2026", duracion: "8 horas" },
 
-            // PREVENCIÓN DEL FUEGO (PF)
+            // PREVENCIÓN DEL FUEGO (PF) - MARZO 2026
             { folio: "PF-2026-FI-001", nombre: "ALBERTO VASQUEZ FERNANDEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
             { folio: "PF-2026-FI-002", nombre: "CRIS BERTIN DUAREZ RIVERA", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
             { folio: "PF-2026-FI-003", nombre: "MARIO GUERRERO CERVANTES", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
@@ -117,8 +117,20 @@
             { folio: "PF-2026-FI-008", nombre: "CHRISTIAN HERNANDEZ CRUZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
             { folio: "PF-2026-FI-009", nombre: "IVAN GARCIA", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
             { folio: "PF-2026-FI-010", nombre: "CESAR LOPEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
-            { folio: "PF-2026-FI-011", nombre: "RICARDO MELENDEZ ALVARADO", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
-            { folio: "PF-2026-FI-012", nombre: "LUIS GUSTAVO OBREGON MARTINEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" }
+            
+            // NUEVOS FOLIOS PREVENCIÓN DEL FUEGO (CONTINUACIÓN)
+            { folio: "PF-2026-CF-011", nombre: "ALBERTO VASQUEZ FERNANDEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-012", nombre: "CRIS BERTIN DUAREZ RIVERA", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-013", nombre: "MARIO GUERRERO CERVANTES", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-014", nombre: "LUIS ARTURO QUINTERO BAEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-015", nombre: "JESUS CHAMORRO TELO", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-016", nombre: "PAUL ALONSO GUTIERREZ GARCIA", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-017", nombre: "LUIS ALBERTO GARCIA HERNANDEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-018", nombre: "CHRISTIAN HERNANDEZ CRUZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-019", nombre: "IVAN GARCIA", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-020", nombre: "CESAR LOPEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-021", nombre: "RICARDO MELENDEZ ALVARADO", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" },
+            { folio: "PF-2026-CF-022", nombre: "LUIS GUSTAVO OBREGON MARTINEZ", curso: "Prevención del fuego", fecha: "24 de marzo del 2026", duracion: "7 horas" }
         ];
 
         function buscarFolio() {
@@ -162,7 +174,7 @@
                                 </div>
                                 <div class="mt-4 bg-gray-50 p-3 rounded-lg text-center border border-gray-100">
                                     <p class="text-[11px] text-gray-500 leading-relaxed italic">
-                                        Esta constancia ha sido emitida tras completar satisfactoriamente las horas de capacitación requeridas bajo la normativa de Protección Civil.
+                                        Esta constancia ha sido emitida tras completar satisfactoriamente las horas de capacitación requeridas bajo la normativa de Protección Civil y está registrada ante el padrón de consultores externos.
                                     </p>
                                 </div>
                             </div>
@@ -177,7 +189,7 @@
                             <span class="text-red-700 font-bold uppercase">Folio Inválido</span>
                         </div>
                         <div class="p-8 text-center">
-                            <p class="text-gray-700 mb-2">El folio <span class="font-bold text-red-600">${input}</span> no se encuentra en el registro.</p>
+                            <p class="text-gray-700 mb-2">El folio <span class="font-bold text-red-600">${input}</span> no se encuentra en el registro oficial de 2026.</p>
                             <p class="text-xs text-gray-400">Verifique que el folio coincida exactamente con el impreso en su constancia o intente escanear el código QR nuevamente.</p>
                         </div>
                     </div>
