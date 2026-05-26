@@ -114,6 +114,18 @@ const registros = [
             {f: "ER-2026-TC-008", n: "JULIANA HERNANDEZ HERNANDEZ", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "08 de mayo del 2026", c: "9"},
             {f: "ER-2026-TC-009", n: "CARLOS BUSTOS OCAMPO", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "08 de mayo del 2026", c: "9"},
 
+            // --- NUEVOS: TECAMACHALCO - PREVENCIÓN DEL FUEGO (17 de Abril 2026) ---
+            {f: "PF-2026-TC-001", n: "GEOVANI ENRIQUE GERARDO ESCANDON", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "8"},
+            {f: "PF-2026-TC-002", n: "PEDRO JESUS VAZQUEZ", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "9"},
+            {f: "PF-2026-TC-003", n: "JULIANA HERNANDEZ HERNANDEZ", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "9"},
+            {f: "PF-2026-TC-004", n: "MIGUEL ANGEL GONZALEZ SEDANO", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "10"},
+            {f: "PF-2026-TC-005", n: "ALEJANDRO BETANCOURT", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "5"},
+            {f: "PF-2026-TC-006", n: "CARLOS BUSTOS OCAMPO", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "6"},
+            {f: "PF-2026-TC-007", n: "MIGUEL ANGEL GARCIA ANGELES", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "9"},
+            {f: "PF-2026-TC-008", n: "JUAN MIGUEL MORALES ROSALES", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "8"},
+            {f: "PF-2026-TC-009", n: "LILIANA RODRIGUEZ PEREZ", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "4"},
+            {f: "PF-2026-TC-010", n: "BETSY RAMIREZ RESENDIZ", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "10"},
+            {f: "PF-2026-TC-011", n: "DAVID GARCIA", t: "Prevención del fuego", d: "8 horas", fe: "17 de abril del 2026", c: "10"}
 ];
 
         function normalizar(texto) { return texto.toUpperCase().replace(/[^A-Z0-9]/g, "").trim(); }
@@ -132,7 +144,7 @@ const registros = [
                     errFolioLabel.textContent = "Ninguno proporcionado";
                     error.classList.remove('hidden');
                     return;
-                </div>
+                }
 
                 const cleanInput = normalizar(folioBuscado);
                 const registro = registros.find(r => normalizar(r.f) === cleanInput);
