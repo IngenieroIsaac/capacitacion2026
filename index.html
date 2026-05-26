@@ -25,13 +25,11 @@
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-10 max-w-lg">
-        <!-- Pantalla de Carga -->
         <div id="loading" class="text-center py-20">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-900 border-t-transparent"></div>
             <p class="mt-4 text-gray-500 font-semibold italic">Verificando en base de datos...</p>
         </div>
 
-        <!-- Resultado Éxito -->
         <div id="result-card" class="hidden bg-white rounded-2xl shadow-2xl overflow-hidden animate-in border border-gray-100">
             <div class="bg-emerald-600 p-6 text-center text-white">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-3">
@@ -75,7 +73,6 @@
             </div>
         </div>
 
-        <!-- Resultado Error -->
         <div id="error-card" class="hidden bg-white rounded-2xl shadow-xl p-10 text-center animate-in border-t-4 border-red-500">
             <div class="text-red-500 mb-4">
                 <i class="fas fa-times-circle text-6xl"></i>
@@ -98,33 +95,47 @@
     </footer>
 
     <script>
-       const registros = [
-    // --- PRIMEROS AUXILIOS INTERLOMAS (13 de febrero 2026) ---
-    {f: "PA-2026-CF-001", n: "RITA MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-002", n: "ANASANA CALDERON VICTORIO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-003", n: "TANIA JAZMIN LEYVA AYALA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-004", n: "CRISTINO CARBAJAL CATALÁN", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-005", n: "ROSA M. PEREZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-006", n: "LILIANA GONZALEZ LUNA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-007", n: "ISRAEL VÁZQUEZ LOPEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-008", n: "YADHIRA MOCTEZUMA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-009", n: "SAID ISAI FLORES GUARNEROS", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
-    {f: "PA-2026-CF-010", n: "ANTONIO PEREZ ENRIQUEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+        const registros = [
+            // --- PRIMEROS AUXILIOS INTERLOMAS (13 de febrero 2026) ---
+            {f: "PA-2026-CF-001", n: "RITA MARTINEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-002", n: "ANASANA CALDERON VICTORIO", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-003", n: "TANIA JAZMIN LEYVA AYALA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-004", n: "CRISTINO CARBAJAL CATALÁN", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-005", n: "ROSA M. PEREZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-006", n: "LILIANA GONZALEZ LUNA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-007", n: "ISRAEL VÁZQUEZ LOPEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-008", n: "YADHIRA MOCTEZUMA", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-009", n: "SAID ISAI FLORES GUARNEROS", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
+            {f: "PA-2026-CF-010", n: "ANTONIO PEREZ ENRIQUEZ", t: "Primeros Auxilios", d: "8 horas", fe: "13 de febrero de 2026", c: "10.0"},
 
-    // --- PREVENCIÓN DEL FUEGO INTERLOMAS (24 de marzo 2026) ---
-    {f: "PF-2026-CF-011", n: "ALBERTO VASQUEZ FERNANDEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-012", n: "CRIS BERTIN DUAREZ RIVERA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-013", n: "MARIO GUERRERO CERVANTES", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-014", n: "LUIS ARTURO QUINTERO BAEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-015", n: "JESUS CHAMORRO TELO", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-016", n: "PAUL ALONSO GUTIERREZ GARCIA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-017", n: "LUIS ALBERTO GARCIA HERNANDEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-018", n: "CHRISTIAN HERNANDEZ CRUZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-019", n: "IVAN GARCIA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-020", n: "CESAR LOPEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-021", n: "RICARDO MELENDEZ ALVARADO", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
-    {f: "PF-2026-CF-022", n: "LUIS GUSTAVO OBREGON MARTINEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"}
-];
+            // --- PREVENCIÓN DEL FUEGO INTERLOMAS (24 de marzo 2026) ---
+            {f: "PF-2026-CF-011", n: "ALBERTO VASQUEZ FERNANDEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-012", n: "CRIS BERTIN DUAREZ RIVERA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-013", n: "MARIO GUERRERO CERVANTES", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-014", n: "LUIS ARTURO QUINTERO BAEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-015", n: "JESUS CHAMORRO TELO", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-016", n: "PAUL ALONSO GUTIERREZ GARCIA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-017", n: "LUIS ALBERTO GARCIA HERNANDEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-018", n: "CHRISTIAN HERNANDEZ CRUZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-019", n: "IVAN GARCIA", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-020", n: "CESAR LOPEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-021", n: "RICARDO MELENDEZ ALVARADO", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+            {f: "PF-2026-CF-022", n: "LUIS GUSTAVO OBREGON MARTINEZ", t: "Prevención del fuego", d: "7 horas", fe: "24 de marzo de 2026", c: "10.0"},
+
+            // --- EVACUACIÓN DE INMUEBLES Y REPLIEGUE INTERLOMAS (24 de abril 2026) ---
+            {f: "ER-2026-CF-001", n: "LUIS ARTEAGA", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "9"},
+            {f: "ER-2026-CF-002", n: "MIGUEL ANGEL MIRANDA BRAVO", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "10"},
+            {f: "ER-2026-CF-003", n: "JAFET DIAZ HERNANDEZ", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "9"},
+            {f: "ER-2026-CF-004", n: "GRISELDA MAGALI CRUZ BAENA", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "6"},
+            {f: "ER-2026-CF-005", n: "VERONICA MARTINEZ DEL ANGEL", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "7"},
+            {f: "ER-2026-CF-006", n: "CANDY NALLELY HIGUERA GONZALEZ", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "7"},
+            {f: "ER-2026-CF-007", n: "MONDRAGON CAMACHO ALONDRA ANDREA", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "9"},
+            {f: "ER-2026-CF-008", n: "ROBERTO ELEAZAR MARTINEZ GARCIA", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "9"},
+            {f: "ER-2026-CF-009", n: "ITA YUYU TORRES LIBRADO", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "10"},
+            {f: "ER-2026-CF-010", n: "JANETH PEREZ SANTIAGO", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "10"},
+            {f: "ER-2026-CF-011", n: "ROCIO SALVADOR PABLO", t: "Evacuación de inmuebles y Repliegue", d: "5 horas", fe: "24 de abril del 2026", c: "10"}
+        ];
+
         // Función para limpiar caracteres especiales de los folios al buscar
         function normalizar(texto) {
             return texto.toUpperCase().replace(/[^A-Z0-9]/g, "").trim();
