@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Constancias | PC Consultoría e Ingeniería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+        body { font-family: 'Montserrat', sans-serif; background-color: #f8fafc; }
+        .gradient-header { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); }
+        .status-badge { border-radius: 99px; padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .animate-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="gradient-header text-white py-6 shadow-xl">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-2xl font-bold tracking-widest uppercase">PC Consultoría e Ingeniería</h1>
+            <p class="text-blue-200 text-xs mt-1 font-medium tracking-wider">SISTEMA OFICIAL DE VERIFICACIÓN DE CAPACITACIÓN</p>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-10 max-w-lg">
+        <!-- Pantalla de Carga -->
+        <div id="loading" class="text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-900 border-t-transparent"></div>
+            <p class="mt-4 text-gray-500 font-semibold italic">Verificando en base de datos...</p>
+        </div>
+
+        <!-- Resultado Éxito -->
+        <div id="result-card" class="hidden bg-white rounded-2xl shadow-2xl overflow-hidden animate-in border border-gray-100">
+            <div class="bg-emerald-600 p-6 text-center text-white">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-3">
+                    <i class="fas fa-check text-3xl"></i>
+                </div>
+                <h2 class="text-xl font-bold uppercase">Documento Auténtico</h2>
+                <p class="text-xs text-emerald-100">Validado exitosamente para el ciclo 2026</p>
+            </div>
+
+            <div class="p-8 space-y-5">
+                <div>
+                    <label class="text-[10px] text-gray-400 font-black uppercase tracking-tighter">Participante</label>
+                    <p id="res-nombre" class="text-xl font-bold text-slate-800 leading-tight uppercase"></p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50">
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-black uppercase">No. de Folio</label>
+                        <p id="res-folio" class="text-sm font-mono font-bold text-blue-700"></p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-black uppercase">Resultado</label>
+                        <p class="text-sm font-bold text-slate-700">Aprobado (<span id="res-calif"></span>/10)</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-2 border-t border-gray-50">
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-black uppercase">Razón Social</label>
+                        <p id="res-rs" class="text-xs font-bold text-slate-700 uppercase"></p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-black uppercase">Sucursal</label>
+                        <p id="res-sucursal" class="text-xs font-bold text-slate-700 uppercase"></p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                    <label class="text-[10px] text-gray-400 font-black uppercase">Capacitación Impartida</label>
+                    <p id="res-tema" class="text-sm font-bold text-slate-800 mb-2"></p>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-500 font-bold italic">
+                        <span><i class="far fa-calendar-alt mr-1"></i> <span id="res-fecha"></span></span>
+                        <span><i class="far fa-clock mr-1"></i> <span id="res-duracion"></span></span>
+                    </div>
+                </div>
+
+                <div class="text-center pt-4 border-t border-gray-100">
+                    <p class="text-[9px] text-gray-400 font-bold uppercase mb-2">Firmado digitalmente por:</p>
+                    <p class="text-xs font-black text-slate-700 uppercase">Ing. Isaac Cruz Miranda</p>
+                    <p class="text-[10px] text-slate-400 italic">Consultor Externo PC-STPS</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado Error -->
+        <div id="error-card" class="hidden bg-white rounded-2xl shadow-xl p-10 text-center animate-in border-t-4 border-red-500">
+            <div class="text-red-500 mb-4">
+                <i class="fas fa-times-circle text-6xl"></i>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800 uppercase">Folio Inexistente</h2>
+            <p class="text-gray-500 mt-3 text-sm leading-relaxed">
+                El código ingresado no coincide con nuestros registros oficiales de 2026. Por favor, verifique que el enlace sea el correcto.
+            </p>
+            <div class="mt-6 pt-6 border-t border-gray-100">
+                <p class="text-[10px] text-gray-400 uppercase font-bold">Folio detectado:</p>
+                <p id="err-folio" class="text-xs font-mono font-bold text-red-600 mt-1"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-8 bg-slate-100 text-center border-t border-slate-200">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+            Consultoría e Ingeniería Integral SEHI &copy; 2026
+        </p>
+    </footer>
+
+    <script>
+        const registros = [
+            // PRIMEROS AUXILIOS
+            { f: "PC-2026-001", n: "LUIS ALBERTO ANGELES GARCIA", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-002", n: "ALFREDO RAYMUNDO PRADO VERA", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-003", n: "KARLA DANIELA SALAS FLORES", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-004", n: "NOEMI ELIZABETH SUAREZ PAREDES", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-005", n: "PATRICIA URIBE JIMENEZ", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-006", n: "FRANCISCA", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-007", n: "BRANDON MENDOZA VELÁZQUEZ", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-008", n: "RICARDO MARTÍNEZ CABAÑAS", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-009", n: "MARY JOSE VASQUEZ VICENTE", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-010", n: "ALMA SELENE MOYA MARTÍNEZ", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-011", n: "BREÑA BARON CARPINTERO", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-012", n: "HERIBERTO SOTO COSIO", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-013", n: "MARÍA FERNANDA MICHEL RAMÍREZ SANCHEZ", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-014", n: "SABINA ROBLEDO HERNANDEZ", t: "PRIMEROS AUXILIOS", d: "5 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+
+            // INTEGRAL DE PC
+            { f: "PC-2026-015", n: "CARLOS JESUS CRUZ ONTIVEROS", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-016", n: "ISAAC ELÍAS CABRERA JIMÉNEZ", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-017", n: "JULIO CÉSAR MORENO REYES", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-018", n: "JOSÉ IGNACIO ROMERO GARCÍA", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-019", n: "ANTONIO JIMÉNEZ", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-020", n: "HEXAL ALEJANDRO ARTEAGA VILLARREAL", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-021", n: "EDUARDO DE LA ROSA CERVANTES", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-022", n: "ARTURO GUTIÉRREZ GARCÍA", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-023", n: "ERIK EDUARDO TORRES MORENO", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-024", n: "BENÍTEZ MARTÍNEZ ARTURO", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-025", n: "CESAR IVAN HERNÁNDEZ OLIVARES", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-026", n: "ALEJANDRO CHÁVEZ ADEYA", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+            { f: "PC-2026-027", n: "RUBEN BELTRAN", t: "INTEGRAL DE PC", d: "6 horas", fe: "17 de Agosto de 2026", c: "8.0", rs: "BGI GAMING & SYSTEMS SRL DE CV", s: "LNW" },
+
+            // EVACUACIÓN Y REPLIEGUE
+            { f: "PC-2026-028", n: "GABRIELA TURNER", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-029", n: "LEANDRO ABRAHAM MARTINEZ RUIZ", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-030", n: "PATRICIA URIBE JIMENEZ", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-031", n: "GUILLERMINA MIRANDA RAMOS", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-032", n: "RICARDO OMAR EUROZA ROMERO", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-033", n: "NICOLÁS VELASCO GARCÍA", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-034", n: "NANCY GUZMÁN MENDOZA", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-035", n: "ERNESTO LÓPEZ VÁZQUEZ", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-036", n: "NOEMÍ ELIZABETH SUAREZ PAREDES", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-037", n: "SALVADOR RODRÍGUEZ GUTIÉRREZ", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-038", n: "ALEJANDRA HERNÁNDEZ FERNANDEZ", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-039", n: "EVANGELINA HERNANDEZ CORTES", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-040", n: "MARÍA DEL ROSARIO RODRÍGUEZ GASPAR", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-041", n: "ROSA ANGELA REYES PACHECO", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-042", n: "MARISOL ALICIA SUAREZ", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-043", n: "JULIO CESAR ANGEL CITALAN", t: "EVACUACIÓN Y REPLIEGUE", d: "5 horas", fe: "20 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+
+            // COMUNICACIÓN
+            { f: "PC-2026-044", n: "NOEMÍ ELIZABETH SUÁREZ PAREDES", t: "COMUNICACIÓN", d: "3 horas", fe: "21 de Septiembre de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-045", n: "SILVIA GONZALEZ MARTINEZ", t: "COMUNICACIÓN", d: "3 horas", fe: "21 de Septiembre de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-046", n: "MARCO ANTONIO VÁZQUEZ COLIN", t: "COMUNICACIÓN", d: "3 horas", fe: "21 de Septiembre de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-047", n: "SANTA REYES", t: "COMUNICACIÓN", d: "3 horas", fe: "21 de Septiembre de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+
+            // APOYO PSICOSOCIAL
+            { f: "PC-2026-048", n: "KARLA DANIELA SALAS FLORES", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-049", n: "CLARA ELIA CERNAS MARTINEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-050", n: "PATRICIA URIBE JIMENEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-051", n: "NOEMÍ ELIZABETH SUÁREZ PAREDES", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-052", n: "BRENDA BARON CARPINTERO", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-053", n: "CYNTIA VIRIDIANA VÁZQUEZ SÁNCHEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-054", n: "LUIS ALBERTO ANGELES GARCIA", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-055", n: "RAÚL GONZÁLEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-056", n: "RICARDO MARTÍNEZ CABAÑAS", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-057", n: "ROCIO GUADALUPE GUZMAN JUAREZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-058", n: "ALMA SELENE MOYA MARTINEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-059", n: "MARA GARCIA", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-060", n: "CLARA ELIA CERNAS MARTINEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-061", n: "FRANCISCA APARICIO ROSAS", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-062", n: "HERIBERTO SOTO COSIO", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-063", n: "FRANCISCO JAVIER OLMOS SANCHEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-064", n: "SABINA ROBLEDO HERNANDEZ", t: "APOYO PSICOSOCIAL", d: "5 horas", fe: "28 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+
+            // PREVENCIÓN DEL FUEGO
+            { f: "PC-2026-065", n: "BRANDON YAEL GUZMÁN GUTIERREZ", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-066", n: "ESTEBAN SANTIAGO PATRICIO", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-067", n: "DIEGO OCTAVIO", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-068", n: "ERICK BASTIDA MORALES", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-069", n: "ERNESTO VILLEDA ALAMO", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-070", n: "PATRICIA URIBE JIMENEZ", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-071", n: "MARCO ANTONIO ESPINOSA CAMPOS", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-072", n: "BRANDON ALEXIS RODRIGUEZ REVELES", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-073", n: "ADRIAN OLVERA RIVERA", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-074", n: "LUCINA CAMACHO CHAVEZ", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" },
+            { f: "PC-2026-075", n: "NOEMI ELIZABETH SUAREZ PAREDES", t: "PREVENCIÓN DEL FUEGO", d: "6 horas", fe: "18 de Agosto de 2026", c: "8.0", rs: "ZERMAT INTERNACIONAL S.A. DE C.V.", s: "ZERMAT" }
+        ];
+
+        function normalizar(texto) {
+            return texto.toUpperCase().replace(/[^A-Z0-9]/g, "").trim();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const folioBuscado = urlParams.get('folio') || "";
+            
+            const loader = document.getElementById('loading');
+            const card = document.getElementById('result-card');
+            const error = document.getElementById('error-card');
+            const errFolioLabel = document.getElementById('err-folio');
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+
+                if (!folioBuscado) {
+                    errFolioLabel.textContent = "Ninguno proporcionado";
+                    error.classList.remove('hidden');
+                    return;
+                }
+
+                const cleanInput = normalizar(folioBuscado);
+                const registro = registros.find(r => normalizar(r.f) === cleanInput);
+
+                if (registro) {
+                    document.getElementById('res-nombre').textContent = registro.n;
+                    document.getElementById('res-folio').textContent = registro.f;
+                    document.getElementById('res-tema').textContent = registro.t;
+                    document.getElementById('res-duracion').textContent = registro.d;
+                    document.getElementById('res-fecha').textContent = registro.fe;
+                    document.getElementById('res-calif').textContent = registro.c;
+                    document.getElementById('res-rs').textContent = registro.rs;
+                    document.getElementById('res-sucursal').textContent = registro.s;
+                    card.classList.remove('hidden');
+                } else {
+                    errFolioLabel.textContent = folioBuscado;
+                    error.classList.remove('hidden');
+                }
+            }, 800);
+        });
+    </script>
+</body>
+</html>
